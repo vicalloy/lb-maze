@@ -65,20 +65,18 @@ class Map(object):
         self.max_x, self.max_y = max_x, max_y
         self.mmap = [[None for j in range(self.max_y)] for i in range(self.max_x)]
         self.solution = []
-        block_stack = [Block(None, -1, -1)]  # a unused block
-        block = Block(self, 0, 0)
+        block_stack = [Block(self, 0, 0)]  # a unused block
         while block_stack:
+            block = block_stack.pop()
             next_block = block.get_next_block()
             if next_block:
                 block_stack.append(block)
-                block = next_block
+                block_stack.append(next_block)
                 if block.x == self.max_x - 1 and block.y == self.max_y - 1:  # is end
                     for o in block_stack:
                         if o.x >= 0:
                             self.solution.append((o.x, o.y))
                     self.solution.append((self.max_x - 1, self.max_y - 1))
-            else:
-                block = block_stack.pop()
 
     def __unicode__(self):
         out = ""
