@@ -1,5 +1,7 @@
 *.py[cod]
 
+javascript/js/maze.js
+
 # C extensions
 *.so
 
