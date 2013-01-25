@@ -1,3 +1,7 @@
+getRandomInt = (min, max) ->
+  Math.floor(Math.random() * (max - min + 1)) + min
+
+
 fmtTime = (t) ->
   d = new Date(null);
   d.setSeconds(t/1000);
@@ -67,25 +71,21 @@ class Map
         false
     solution = []
     @solution = solution
-    blockStack = []  # a unused block
-    block = new Block @, 0, 0
-    empty = false
+    blockStack = [new Block @, getRandomInt(0, maxX), getRandomInt(0, maxY)]  # a unused block
     dowhile = ->
+      if getRandomInt(0, maxX + maxY) == 0
+        blockStack = _.shuffle(blockStack)
+      block = blockStack.pop()
       nextBlock = block.getNextBlock()
       if nextBlock
         blockStack.push block
-        block = nextBlock
-        if block.x == maxX - 1 && block.y == maxY - 1  # is end
+        blockStack.push nextBlock
+        if nextBlock.x == maxX - 1 && nextBlock.y == maxY - 1  # is end
           for o in blockStack
             if o.x >= 0
               solution.push [o.x, o.y]
           solution.push [maxX - 1, maxY - 1]
-      else
-        if blockStack.length == 0
-          empty = true
-        else
-          block = blockStack.pop()
-    dowhile() while !empty
+    dowhile() while blockStack.length
 
   moveNext: (x, y, direction) ->
     if @mmap[x][y].walls[direction] # has wall
