@@ -61,6 +61,45 @@ class Block
     return false
 
 
+class Solver
+  getNextStep: (mmap, steps, block) ->
+    directions = [0..3]
+    for direction in directions
+      if block.walls[direction]  # if wall
+        continue
+      pt = block.getNextBlockPos(direction)
+      x = pt[0]
+      y = pt[1]
+      if x >= mmap.maxX || x < 0 || y >= mmap.maxY || y < 0
+        continue
+      if steps[x][y]  # if walked
+        continue
+      steps[x][y] = true
+      return mmap.mmap[x][y]
+    return false
+
+  solve: (mmap) ->
+    steps = for x in [0...mmap.maxX]
+      for y in [0...mmap.maxY]
+        false
+    maxX = mmap.maxX
+    maxY = mmap.maxY
+    solution = []
+    blockStack = [mmap.mmap[0][0]]
+    dowhile = (so) ->
+      block = blockStack.pop()
+      nextBlock = so.getNextStep mmap, steps, block
+      if nextBlock
+        blockStack.push block
+        blockStack.push nextBlock
+        if nextBlock.x == maxX - 1 && nextBlock.y == maxY - 1  # is end
+          for o in blockStack
+            solution.push [o.x, o.y]
+          solution.push [maxX - 1, maxY - 1]
+    dowhile(@) while blockStack.length
+    return solution
+
+
 class Map
   resetMap: ->
     @genMap @maxX, @maxY
@@ -69,9 +108,7 @@ class Map
     @mmap = for x in [0...@maxX]
       for y in [0...@maxY]
         false
-    solution = []
-    @solution = solution
-    blockStack = [new Block @, getRandomInt(0, maxX), getRandomInt(0, maxY)]  # a unused block
+    blockStack = [new Block @, getRandomInt(0, maxX), getRandomInt(0, maxY)]
     dowhile = ->
       if getRandomInt(0, maxX + maxY) == 0
         blockStack = _.shuffle(blockStack)
@@ -80,11 +117,6 @@ class Map
       if nextBlock
         blockStack.push block
         blockStack.push nextBlock
-        if nextBlock.x == maxX - 1 && nextBlock.y == maxY - 1  # is end
-          for o in blockStack
-            if o.x >= 0
-              solution.push [o.x, o.y]
-          solution.push [maxX - 1, maxY - 1]
     dowhile() while blockStack.length
 
   moveNext: (x, y, direction) ->
@@ -117,7 +149,8 @@ class DrawMap
 
   drawSolution: ->
     pre = [0, 0]
-    for o in @mmap.solution
+    solution = (new Solver()).solve(@mmap)
+    for o in solution
       p1 = @getCellCenter(pre[0], pre[1])
       p2 = @getCellCenter(o[0], o[1])
       @createSolutionLine(p1[0], p1[1], p2[0], p2[1])
