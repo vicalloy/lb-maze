@@ -67,21 +67,25 @@ class Map
         false
     solution = []
     @solution = solution
-    block_stack = [new Block false, -1, -1]  # a unused block
+    blockStack = []  # a unused block
     block = new Block @, 0, 0
+    empty = false
     dowhile = ->
-      next_block = block.getNextBlock()
-      if next_block
-        block_stack.push block
-        block = next_block
+      nextBlock = block.getNextBlock()
+      if nextBlock
+        blockStack.push block
+        block = nextBlock
         if block.x == maxX - 1 && block.y == maxY - 1  # is end
-          for o in block_stack
+          for o in blockStack
             if o.x >= 0
               solution.push [o.x, o.y]
           solution.push [maxX - 1, maxY - 1]
       else
-        block = block_stack.pop()
-    dowhile() while block_stack.length
+        if blockStack.length == 0
+          empty = true
+        else
+          block = blockStack.pop()
+    dowhile() while !empty
 
   moveNext: (x, y, direction) ->
     if @mmap[x][y].walls[direction] # has wall
@@ -155,9 +159,11 @@ class HTML5DrawMap extends DrawMap
     @ctx.strokeStyle = "black"
 
   drawStart: ->
+    @ctx.fillStyle = "red"
     @ctx.fillText "S", @cellWidth + 1, @cellWidth * 2 - 1
   
   drawEnd: ->
+    @ctx.fillStyle = "red"
     @ctx.fillText "E", @cellWidth * @mmap.maxX + 1, @cellWidth * (@mmap.maxY + 1) - 1
 
 #init params
