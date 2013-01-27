@@ -108,7 +108,7 @@ class Map
     @mmap = for x in [0...@maxX]
       for y in [0...@maxY]
         false
-    blockStack = [new Block @, getRandomInt(0, maxX), getRandomInt(0, maxY)]
+    blockStack = [new Block @, getRandomInt(0, maxX - 1), getRandomInt(0, maxY - 1)]
     dowhile = ->
       if getRandomInt(0, maxX + maxY) == 0
         blockStack = _.shuffle(blockStack)
