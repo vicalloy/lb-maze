@@ -221,9 +221,6 @@ newGame = ->
   manX = 0
   manY = 0
   end = false
-  #set man to start pos
-  elMan.css 'left', addPX("-" + elCanvas.css('width'), 8)
-  elMan.css 'top', addPX("-" + elCanvas.css('height'), 18)
   #map size
   size = parseInt elMapsize.val()
   if size > 100
@@ -234,8 +231,18 @@ newGame = ->
   elTimer.text '00:00'
   ctx.beginPath()
   ctx.clearRect 0, 0, 1500, 1500
-  dmap.drawMap()
   startTime = new Date()
+  #set canvas size
+  pt = dmap.getMapSize()
+  elCanvas.attr('width', pt[0])
+  elCanvas.attr('height', pt[1])
+  #set man to start pos
+  #elMan.css 'left', addPX("-" + elCanvas.css('width'), 8)
+  #elMan.css 'top', addPX("-" + elCanvas.css('height'), 10)
+  elMan.css 'left', "12px"
+  elMan.css 'top', addPX("-" + elCanvas.css('height'), -1)
+  #draw
+  dmap.drawMap()
 
 
 isWin = ->
