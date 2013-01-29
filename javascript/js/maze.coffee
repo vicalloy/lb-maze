@@ -85,6 +85,7 @@ class Solver
     maxX = mmap.maxX
     maxY = mmap.maxY
     solution = []
+    steps[0][0] = true
     blockStack = [mmap.mmap[0][0]]
     dowhile = (so) ->
       block = blockStack.pop()
