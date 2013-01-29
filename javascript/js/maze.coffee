@@ -240,7 +240,7 @@ newGame = ->
   #elMan.css 'left', addPX("-" + elCanvas.css('width'), 8)
   #elMan.css 'top', addPX("-" + elCanvas.css('height'), 10)
   elMan.css 'left', "12px"
-  elMan.css 'top', addPX("-" + elCanvas.css('height'), -1)
+  elMan.css 'top', addPX("-" + elCanvas.css('height'), 7)
   #draw
   dmap.drawMap()
 
