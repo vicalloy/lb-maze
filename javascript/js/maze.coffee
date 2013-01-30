@@ -96,7 +96,6 @@ class Solver
         if nextBlock.x == maxX - 1 && nextBlock.y == maxY - 1  # is end
           for o in blockStack
             solution.push [o.x, o.y]
-          solution.push [maxX - 1, maxY - 1]
     dowhile(@) while blockStack.length
     return solution
 
