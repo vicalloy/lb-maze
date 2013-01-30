@@ -42,8 +42,6 @@ class Block(object):
         directions = list(range(4))
         random.shuffle(directions)
         for direction in directions:
-            if not self.walls[direction]:  # if no wall
-                continue
             x, y = self.get_next_block_pos(direction)
             if x >= self.mmap.max_x or x < 0 or y >= self.mmap.max_y or y < 0:
                 continue
