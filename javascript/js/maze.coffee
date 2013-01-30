@@ -47,8 +47,6 @@ class Block
   getNextBlock: ->
     directions = _.shuffle [0..3]
     for direction in directions
-      if !@walls[direction]  # if no wall
-        continue
       pt = @getNextBlockPos(direction)
       x = pt[0]
       y = pt[1]
