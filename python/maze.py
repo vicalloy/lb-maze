@@ -72,11 +72,9 @@ class Map(object):
             if next_block:
                 block_stack.append(block)
                 block_stack.append(next_block)
-                if block.x == self.max_x - 1 and block.y == self.max_y - 1:  # is end
+                if next_block.x == self.max_x - 1 and next_block.y == self.max_y - 1:  # is end
                     for o in block_stack:
-                        if o.x >= 0:
-                            self.solution.append((o.x, o.y))
-                    self.solution.append((self.max_x - 1, self.max_y - 1))
+                        self.solution.append((o.x, o.y))
 
     def __unicode__(self):
         out = ""
