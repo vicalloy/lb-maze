@@ -241,6 +241,7 @@ newGame = ->
   elMan.css 'top', addPX("-" + elCanvas.css('height'), 12)
   #draw
   dmap.drawMap()
+  update_recode()
 
 
 isWin = ->
@@ -257,8 +258,7 @@ go = (direction)->
     move(elMan, direction)
     if isWin()
       end = true
-			#clearInterval(timer);
-      alert('you win');
+      new_recode()
 
 
 $(document).keydown((e) ->
@@ -279,8 +279,22 @@ $('#id-btn-newgame').click(->
 
 
 $('#id-btn-solution').click(->
- dmap.drawSolution() 
+  end = true
+  dmap.drawSolution() 
+  alert "Game Over"
 )
 
+######################
+uname = "passerby"
+
+getMapSize = ->
+  elMapsize.val() + "x" + elMapsize.val()
+
+update_recode = ->
+	#get best recode from server and show it.
+
+new_recode = ->
+  #create a new recode
+  alert "Congratulation, you escaped the maze."
 
 newGame()
